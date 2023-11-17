@@ -2,6 +2,12 @@ import { FC, useEffect, useState } from "react";
 import "../App.css";
 import Word from "./Word";
 import GameOver from "./GameOver";
+import {
+    WORD_LENGTH,
+    MAX_GUESS_LENGTH,
+    BACKSPACE_KEY,
+    ENTER_KEY,
+} from "../constants";
 type BoardProps = {
     word: string;
     setNewWord: () => void;
@@ -24,32 +30,32 @@ const Board: FC<BoardProps> = ({ word, setNewWord }) => {
                 return;
             }
             setCurrentGuess((prev) => {
-                // handles backspace
-                if (event.key === "Backspace") {
-                    return prev.slice(0, -1);
+                switch (event.key) {
+                    case BACKSPACE_KEY:
+                        return prev.slice(0, -1);
+                    case ENTER_KEY:
+                        if (prev.length === MAX_GUESS_LENGTH) {
+                            if (isSolution || guessCount === 5) {
+                                setIsGameOver(true);
+                            }
+                            setGuesses((oldGuesses) => {
+                                const newGuesses = [...oldGuesses];
+                                newGuesses[guessCount] = prev;
+                                return newGuesses;
+                            });
+                            setGuessCount((prev) => prev + 1);
+                            return "";
+                        }
+                        break;
+                    default:
+                        if (
+                            event.key.match(/^[a-zA-Z]+$/g) &&
+                            event.key.length === 1 &&
+                            prev.length < MAX_GUESS_LENGTH
+                        ) {
+                            return prev + event.key.toLowerCase();
+                        }
                 }
-
-                // handles enter TODO: colors of submission
-                if (event.key === "Enter" && prev.length === 5) {
-                    if (isSolution || guessCount === 5) setIsGameOver(true);
-                    setGuessCount((prev) => prev + 1);
-                    setGuesses((oldGuesses) => {
-                        const newGuesses = [...oldGuesses];
-                        newGuesses[guessCount] = prev;
-                        return newGuesses;
-                    });
-                    return "";
-                }
-
-                // hanldes input: only keyboard letters and only adds letter is current guess is less than 5 letters long
-                if (
-                    event.key.match(/^[a-zA-Z]+$/g) &&
-                    event.key.length === 1 &&
-                    prev.length < 5
-                ) {
-                    return prev + event.key.toLowerCase();
-                }
-
                 return prev;
             });
         };
@@ -67,7 +73,6 @@ const Board: FC<BoardProps> = ({ word, setNewWord }) => {
     console.log(word);
     return (
         <div className="Board">
-            {word}
             {isGameOver && <GameOver handleRestart={handleRestart} />}
             {guesses.map((guess, index) => {
                 const isCurrentGuess = (index: number) => {
