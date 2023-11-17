@@ -1,0 +1,92 @@
+.App {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: #121214;
+}
+
+.NavBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 6.5vh;
+    border-bottom: 1px solid #3a3a3b;
+    color: white;
+    font-size: calc(8px + 2vmin);
+}
+
+.Board {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    max-width: 1000px;
+    color: white;
+    margin-top: 50px;
+    /* margin: 0 auto; */
+    /* padding: 20px; */
+    /* flex-wrap: wrap; */
+    /* font-size: calc(10px + 2vmin); */
+}
+
+.Word {
+    display: flex;
+    flex-direction: row;
+    color: white;
+    margin: 5px;
+    /* font-size: calc(10px + 2vmin); */
+}
+
+.Tile {
+    height: 50px;
+    color: white;
+    margin: 3px;
+    /* font-size: calc(10px + 2vmin); */
+}
+
+.Letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    aspect-ratio: 1;
+    background-color: #121214;
+    color: white;
+    font-size: calc(25px + 2vmin);
+    text-align: center;
+    border: 2px solid #3a3a3b;
+    text-transform: uppercase;
+}
+
+.GameOver {
+    top: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 1000px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 250px;
+}
+
+.Correct {
+    background-color: #47b447;
+}
+
+.Partial {
+    background-color: #f0ad4e;
+}
