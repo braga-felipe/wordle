@@ -2,19 +2,24 @@ import { FC, useEffect, useState } from "react";
 import "../App.css";
 import Word from "./Word";
 import GameOver from "./GameOver";
+import withLoader from "../hocs/withLoader";
+
 import {
     WORD_LENGTH,
     MAX_GUESS_LENGTH,
     BACKSPACE_KEY,
     ENTER_KEY,
 } from "../constants";
+
 type BoardProps = {
     word: string;
     setNewWord: () => void;
 };
 
 const Board: FC<BoardProps> = ({ word, setNewWord }) => {
-    const [guesses, setGuesses] = useState<string[]>(Array(6).fill(""));
+    const [guesses, setGuesses] = useState<string[]>(
+        Array(MAX_GUESS_LENGTH).fill("")
+    );
 
     const [guessCount, setGuessCount] = useState<number>(0);
 
@@ -34,8 +39,11 @@ const Board: FC<BoardProps> = ({ word, setNewWord }) => {
                     case BACKSPACE_KEY:
                         return prev.slice(0, -1);
                     case ENTER_KEY:
-                        if (prev.length === MAX_GUESS_LENGTH) {
-                            if (isSolution || guessCount === 5) {
+                        if (prev.length === WORD_LENGTH) {
+                            if (
+                                isSolution ||
+                                guessCount === MAX_GUESS_LENGTH - 1
+                            ) {
                                 setIsGameOver(true);
                             }
                             setGuesses((oldGuesses) => {
@@ -51,7 +59,7 @@ const Board: FC<BoardProps> = ({ word, setNewWord }) => {
                         if (
                             event.key.match(/^[a-zA-Z]+$/g) &&
                             event.key.length === 1 &&
-                            prev.length < MAX_GUESS_LENGTH
+                            prev.length < WORD_LENGTH
                         ) {
                             return prev + event.key.toLowerCase();
                         }
@@ -92,4 +100,4 @@ const Board: FC<BoardProps> = ({ word, setNewWord }) => {
     );
 };
 
-export default Board;
+export default withLoader<BoardProps>(Board);
